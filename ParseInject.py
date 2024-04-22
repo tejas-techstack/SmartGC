@@ -3,8 +3,6 @@ import json
 
 import parser 
 
-if __name__ == "__main__":
-    parser.main()
 
 def inject_deallocation_code(input_file, output_file, json_file):
     print("Loading deallocation points from JSON file...")
@@ -23,7 +21,7 @@ def inject_deallocation_code(input_file, output_file, json_file):
         print("Injecting deallocation code...")
         for i, line in enumerate(source_code, start=1):
             f.write(line)
-            print(f"Processing line {i}...")
+            #print(f"Processing line {i}...")
             for deallocation_point in deallocation_points:
                 if i == deallocation_point['line_number']:
                     variable_name = deallocation_point['variable_name']
@@ -40,4 +38,5 @@ if __name__ == "__main__":
     output_file = sys.argv[2]
     json_file = sys.argv[3]
 
+    parser.main(input_file, json_file)
     inject_deallocation_code(input_file, output_file, json_file)

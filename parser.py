@@ -38,9 +38,9 @@ def check_alloc_term(filename, line_number, var_name):
     return False
 
 
-def main():
+def main(input_file, json_file):
     index = Index.create()
-    tu = index.parse('UserCode.c', args=['-std=c11'])
+    tu = index.parse(input_file, args=['-std=c11'])
     print('Translation unit:', tu.spelling)
 
     for node in tu.cursor.get_children():
@@ -50,16 +50,16 @@ def main():
     for iterator in references.keys():
         references[iterator] = int(references[iterator])
         line_number = references[iterator]
-        if check_alloc_term('UserCode.c', line_number, iterator):
+        if check_alloc_term(input_file, line_number, iterator):
             deallocations.append({"line_number": line_number, "variable_name": iterator})
 
     output = {
         "deallocations": deallocations
     }
-    print(deallocations)
+    #print(deallocations)
 
     if deallocations:
-        with open('references.json', 'w') as f:
+        with open(json_file, 'w') as f:
             json.dump(output, f, indent=4)
         print("Data written to references.json")
     else:
